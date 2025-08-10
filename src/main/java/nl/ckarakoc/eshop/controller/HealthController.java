@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Data
 public class HealthController {
-	final String healthMessage ="test";
+	final String healthMessage = "test";
 
 	@GetMapping("health")
 	public String health() {
