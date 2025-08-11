@@ -1,5 +1,6 @@
 package nl.ckarakoc.eshop.controller;
 
+import jakarta.validation.Valid;
 import nl.ckarakoc.eshop.model.Category;
 import nl.ckarakoc.eshop.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.List;
  * Controller class for managing categories in the application.
  * Provides RESTful endpoints to handle the CRUD operations for {@code Category} entities.
  */
-@RestController()
+@RestController
 @RequestMapping("api")
 public class CategoryController {
 
@@ -32,6 +33,13 @@ public class CategoryController {
 		return categoryService.getAllCategories();
 	}
 
+	/**
+	 * Retrieves a category by its unique ID.
+	 *
+	 * @param categoryId the unique identifier of the category to retrieve
+	 * @return the {@code Category} object corresponding to the specified ID
+	 *         or throws an exception if the category is not found
+	 */
 	@GetMapping("public/categories/{categoryId}")
 	public Category getCategoryById(@PathVariable Long categoryId) {
 		return categoryService.getCategoryById(categoryId);
@@ -45,7 +53,7 @@ public class CategoryController {
 	 * and an HTTP status of {@code CREATED}
 	 */
 	@PostMapping("public/categories")
-	public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+	public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
 		return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.CREATED);
 	}
 
@@ -58,7 +66,7 @@ public class CategoryController {
 	 * @return a ResponseEntity containing the updated Category object and an HTTP status of OK
 	 */
 	@PutMapping("public/categories/{categoryId}")
-	public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId, @RequestBody Category category) {
+	public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody Category category) {
 		return new ResponseEntity<>(categoryService.updateCategory(categoryId, category), HttpStatus.OK);
 	}
 
