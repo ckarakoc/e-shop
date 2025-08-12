@@ -8,6 +8,10 @@ import nl.ckarakoc.eshop.payload.CategoryResponse;
 import nl.ckarakoc.eshop.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,14 +26,22 @@ public class CategoryServiceImpl implements CategoryService {
 	private ModelMapper mapper;
 
 	@Override
-	public CategoryResponse getAllCategories() {
-		List<Category> categories = categoryRepository.findAll();
+	public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+		Pageable pageDetails = PageRequest.of(
+				pageNumber,
+				pageSize,
+				sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC,
+				sortBy
+		);
+		Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
+
+		List<Category> categories = categoryPage.getContent();
 		if (categories.isEmpty()) throw new APIException("No categories found");
 
 		List<CategoryDTO> categoryDTOs = categories.stream()
 				.map(category -> mapper.map(category, CategoryDTO.class))
 				.toList();
-		return new CategoryResponse(categoryDTOs);
+		return new CategoryResponse(categoryDTOs, categoryPage.getNumber(), categoryPage.getSize(), categoryPage.getTotalElements(), categoryPage.getTotalPages(), categoryPage.isLast());
 	}
 
 	@Override

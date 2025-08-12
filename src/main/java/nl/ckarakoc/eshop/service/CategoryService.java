@@ -15,7 +15,7 @@ public interface CategoryService {
 	 *
 	 * @return a {@code CategoryResponse} representing all the categories in the system.
 	 */
-	CategoryResponse getAllCategories();
+	CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
 	/**
 	 * Creates a new category in the system.

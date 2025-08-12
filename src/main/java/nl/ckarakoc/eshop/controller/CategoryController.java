@@ -1,6 +1,7 @@
 package nl.ckarakoc.eshop.controller;
 
 import jakarta.validation.Valid;
+import nl.ckarakoc.eshop.config.AppConstants;
 import nl.ckarakoc.eshop.payload.CategoryDTO;
 import nl.ckarakoc.eshop.payload.CategoryResponse;
 import nl.ckarakoc.eshop.service.CategoryService;
@@ -33,8 +34,12 @@ public class CategoryController {
 	 * @return a list containing all {@code Category} objects.
 	 */
 	@GetMapping("public/categories")
-	public ResponseEntity<CategoryResponse> getAllCategories() {
-		return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
+	public ResponseEntity<CategoryResponse> getAllCategories(
+			@RequestParam(name = "pageNumber", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(name = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_CATEGORIES_BY) String sortBy,
+			@RequestParam(name = "sortOrder", defaultValue = AppConstants.DEFAULT_SORT_DIR) String sortOrder) {
+		return new ResponseEntity<>(categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder), HttpStatus.OK);
 	}
 
 	/**
