@@ -1,4 +1,4 @@
-package nl.ckarakoc.eshop.expection;
+package nl.ckarakoc.eshop.exception;
 
 public class APIException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

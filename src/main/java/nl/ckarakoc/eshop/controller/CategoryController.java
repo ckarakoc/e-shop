@@ -1,13 +1,14 @@
 package nl.ckarakoc.eshop.controller;
 
 import jakarta.validation.Valid;
-import nl.ckarakoc.eshop.model.Category;
+import nl.ckarakoc.eshop.payload.CategoryDTO;
+import nl.ckarakoc.eshop.payload.CategoryResponse;
 import nl.ckarakoc.eshop.service.CategoryService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Controller class for managing categories in the application.
@@ -19,6 +20,9 @@ public class CategoryController {
 
 	private CategoryService categoryService;
 
+	@Autowired
+	private ModelMapper mapper;
+
 	public CategoryController(CategoryService categoryService) {
 		this.categoryService = categoryService;
 	}
@@ -29,8 +33,8 @@ public class CategoryController {
 	 * @return a list containing all {@code Category} objects.
 	 */
 	@GetMapping("public/categories")
-	public List<Category> getAllCategories() {
-		return categoryService.getAllCategories();
+	public ResponseEntity<CategoryResponse> getAllCategories() {
+		return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
 	}
 
 	/**
@@ -38,23 +42,23 @@ public class CategoryController {
 	 *
 	 * @param categoryId the unique identifier of the category to retrieve
 	 * @return the {@code Category} object corresponding to the specified ID
-	 *         or throws an exception if the category is not found
+	 * or throws an exception if the category is not found
 	 */
 	@GetMapping("public/categories/{categoryId}")
-	public Category getCategoryById(@PathVariable Long categoryId) {
-		return categoryService.getCategoryById(categoryId);
+	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long categoryId) {
+		return new ResponseEntity<>(categoryService.getCategoryById(categoryId), HttpStatus.OK);
 	}
 
 	/**
 	 * Creates a new category in the system.
 	 *
-	 * @param category the {@code Category} object to be created
-	 * @return a {@code ResponseEntity} containing the newly created {@code Category} object
+	 * @param categoryDto the {@code CategoryDTO} object containing details of the category to be created
+	 * @return a {@code ResponseEntity} containing the newly created {@code CategoryDTO} object
 	 * and an HTTP status of {@code CREATED}
 	 */
 	@PostMapping("public/categories")
-	public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
-		return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.CREATED);
+	public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDto) {
+		return new ResponseEntity<>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
 	}
 
 	/**
@@ -66,7 +70,7 @@ public class CategoryController {
 	 * @return a ResponseEntity containing the updated Category object and an HTTP status of OK
 	 */
 	@PutMapping("public/categories/{categoryId}")
-	public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody Category category) {
+	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDTO category) {
 		return new ResponseEntity<>(categoryService.updateCategory(categoryId, category), HttpStatus.OK);
 	}
 

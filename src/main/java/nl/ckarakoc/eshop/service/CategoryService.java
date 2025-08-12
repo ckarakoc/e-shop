@@ -1,10 +1,7 @@
 package nl.ckarakoc.eshop.service;
 
-import nl.ckarakoc.eshop.expection.EntityNotFoundException;
-import nl.ckarakoc.eshop.model.Category;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import nl.ckarakoc.eshop.payload.CategoryDTO;
+import nl.ckarakoc.eshop.payload.CategoryResponse;
 
 
 /**
@@ -14,43 +11,43 @@ import java.util.List;
 public interface CategoryService {
 
 	/**
-	 * Retrieves all categories available in the system.
+	 * Retrieves a list of all categories available in the system.
 	 *
-	 * @return a list of {@code Category} objects representing all categories.
+	 * @return a {@code CategoryResponse} representing all the categories in the system.
 	 */
-	List<Category> getAllCategories();
+	CategoryResponse getAllCategories();
 
 	/**
 	 * Creates a new category in the system.
 	 *
-	 * @param category the {@code Category} object to be created
-	 * @return the newly created {@code Category} object
+	 * @param category the {@code CategoryDTO} object containing details of the category to be created
+	 * @return the newly created {@code CategoryDTO} object
 	 */
-	Category createCategory(Category category);
+	CategoryDTO createCategory(CategoryDTO category);
 
 	/**
-	 * Retrieves a category by its unique identifier.
+	 * Retrieves the category details for the given category ID.
 	 *
-	 * @param categoryId the unique identifier of the category to retrieve
-	 * @return the {@code Category} object corresponding to the given identifier
-	 * @throws EntityNotFoundException if no category is found with the specified identifier
+	 * @param categoryId the unique identifier of the category to be retrieved
+	 * @return a {@code CategoryDTO} object containing the details of the specified category
 	 */
-	Category getCategoryById(Long categoryId);
+	CategoryDTO getCategoryById(Long categoryId);
 
 	/**
-	 * Updates an existing category identified by its ID with new details.
+	 * Updates an existing category with the specified ID using the provided updated category details.
+	 * The method allows modifying the category's attributes such as its name.
 	 *
 	 * @param categoryId the unique identifier of the category to be updated
-	 * @param category   the {@code Category} object containing the updated details for the category
-	 * @return the updated {@code Category} object
+	 * @param category the {@code CategoryDTO} object containing the new details for the category
+	 *                 to be updated
+	 * @return the updated {@code CategoryDTO} object representing the modified category
 	 */
-	Category updateCategory(Long categoryId, Category category);
+	CategoryDTO updateCategory(Long categoryId, CategoryDTO category);
 
 	/**
 	 * Deletes a category identified by its unique ID.
 	 *
 	 * @param categoryId the unique identifier of the category to be deleted
-	 * @throws EntityNotFoundException if no category is found with the specified identifier
 	 */
 	void deleteCategory(Long categoryId);
 }

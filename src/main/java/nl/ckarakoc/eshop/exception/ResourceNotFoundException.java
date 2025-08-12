@@ -1,4 +1,4 @@
-package nl.ckarakoc.eshop.expection;
+package nl.ckarakoc.eshop.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 	String resourceName, field, fieldName;

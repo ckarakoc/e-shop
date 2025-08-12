@@ -1,4 +1,4 @@
-package nl.ckarakoc.eshop.expection;
+package nl.ckarakoc.eshop.exception;
 
 public class EntityNotFoundException extends RuntimeException {
 	public EntityNotFoundException(String message) {

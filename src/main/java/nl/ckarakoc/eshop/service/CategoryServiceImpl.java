@@ -1,9 +1,12 @@
 package nl.ckarakoc.eshop.service;
 
-import nl.ckarakoc.eshop.expection.APIException;
-import nl.ckarakoc.eshop.expection.ResourceNotFoundException;
+import nl.ckarakoc.eshop.exception.APIException;
+import nl.ckarakoc.eshop.exception.ResourceNotFoundException;
 import nl.ckarakoc.eshop.model.Category;
+import nl.ckarakoc.eshop.payload.CategoryDTO;
+import nl.ckarakoc.eshop.payload.CategoryResponse;
 import nl.ckarakoc.eshop.repository.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,44 +14,55 @@ import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Autowired
+	private ModelMapper mapper;
+
 	@Override
-	public List<Category> getAllCategories() {
+	public CategoryResponse getAllCategories() {
 		List<Category> categories = categoryRepository.findAll();
 		if (categories.isEmpty()) throw new APIException("No categories found");
-		return categories;
+
+		List<CategoryDTO> categoryDTOs = categories.stream()
+				.map(category -> mapper.map(category, CategoryDTO.class))
+				.toList();
+		return new CategoryResponse(categoryDTOs);
 	}
 
 	@Override
-	public Category createCategory(Category category) {
-		Category saved = categoryRepository
-				.findByCategoryName(category.getCategoryName());
-		if (saved != null) throw new APIException("Category with name " + category.getCategoryName() + " already exists");
+	public CategoryDTO createCategory(CategoryDTO categoryDto) {
+		if (categoryRepository.findByCategoryName(categoryDto.getCategoryName()).isPresent())
+			throw new APIException("Category with name " + categoryDto.getCategoryName() + " already exists");
 
-		categoryRepository.save(category);
-		return category;
+		Category saved = categoryRepository.save(mapper.map(categoryDto, Category.class));
+		return mapper.map(saved, CategoryDTO.class);
 	}
 
 	@Override
-	public Category getCategoryById(Long categoryId) {
-		return categoryRepository
-				.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+	public CategoryDTO getCategoryById(Long categoryId) {
+		return mapper
+				.map(categoryRepository
+								.findById(categoryId)
+								.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId)),
+						CategoryDTO.class);
 	}
 
 	@Override
-	public Category updateCategory(Long categoryId, Category category) {
-		Category cat = getCategoryById(categoryId);
-		cat.setCategoryName(category.getCategoryName());
-		categoryRepository.save(cat);
-		return cat;
+	public CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDto) {
+		CategoryDTO cat = getCategoryById(categoryId);
+		cat.setCategoryName(categoryDto.getCategoryName());
+		return mapper
+				.map(categoryRepository
+								.save(mapper.map(cat, Category.class)),
+						CategoryDTO.class);
 	}
 
 	@Override
 	public void deleteCategory(Long categoryId) {
-		Category category = getCategoryById(categoryId);
-		categoryRepository.delete(category);
+		CategoryDTO category = getCategoryById(categoryId);
+		categoryRepository.delete(mapper.map(category, Category.class));
 	}
 }
