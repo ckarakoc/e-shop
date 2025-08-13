@@ -19,14 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api")
 public class CategoryController {
 
+	@Autowired
 	private CategoryService categoryService;
 
 	@Autowired
 	private ModelMapper mapper;
-
-	public CategoryController(CategoryService categoryService) {
-		this.categoryService = categoryService;
-	}
 
 	/**
 	 * Retrieves a list of all existing categories.
