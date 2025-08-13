@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
 		Category category = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+			.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
 		boolean isProductNotPresent = true;
 
@@ -76,12 +76,12 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOS = products.stream().map(product -> mapper.map(product, ProductDTO.class)).toList();
 
 		return new ProductResponse(
-				productDTOS,
-				pageProducts.getNumber(),
-				pageProducts.getSize(),
-				pageProducts.getTotalElements(),
-				pageProducts.getTotalPages(),
-				pageProducts.isLast()
+			productDTOS,
+			pageProducts.getNumber(),
+			pageProducts.getSize(),
+			pageProducts.getTotalElements(),
+			pageProducts.getTotalPages(),
+			pageProducts.isLast()
 		);
 	}
 
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
 		Category category = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+			.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
 		Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 		Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
@@ -99,12 +99,12 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOS = products.stream().map(product -> mapper.map(product, ProductDTO.class)).toList();
 
 		return new ProductResponse(
-				productDTOS,
-				pageProducts.getNumber(),
-				pageProducts.getSize(),
-				pageProducts.getTotalElements(),
-				pageProducts.getTotalPages(),
-				pageProducts.isLast()
+			productDTOS,
+			pageProducts.getNumber(),
+			pageProducts.getSize(),
+			pageProducts.getTotalElements(),
+			pageProducts.getTotalPages(),
+			pageProducts.isLast()
 		);
 	}
 
@@ -118,19 +118,19 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> productDTOS = products.stream().map(product -> mapper.map(product, ProductDTO.class)).toList();
 
 		return new ProductResponse(
-				productDTOS,
-				pageProducts.getNumber(),
-				pageProducts.getSize(),
-				pageProducts.getTotalElements(),
-				pageProducts.getTotalPages(),
-				pageProducts.isLast()
+			productDTOS,
+			pageProducts.getNumber(),
+			pageProducts.getSize(),
+			pageProducts.getTotalElements(),
+			pageProducts.getTotalPages(),
+			pageProducts.isLast()
 		);
 	}
 
 	@Override
 	public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
 		Product productFromDb = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+			.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
 		Product product = mapper.map(productDTO, Product.class);
 		productFromDb.setProductName(product.getProductName());
@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO deleteProduct(Long productId) {
 		Product product = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+			.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 		productRepository.delete(product);
 		return mapper.map(product, ProductDTO.class);
 	}
@@ -155,7 +155,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO updateProductImage(Long productId, MultipartFile image) {
 		Product productFromDb = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+			.orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
 		String filename = fileService.uploadImage(imagePath, image);
 

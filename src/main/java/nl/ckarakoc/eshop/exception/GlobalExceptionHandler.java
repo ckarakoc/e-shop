@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<Map<String, String>> handleEntityNotFound(EntityNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(Map.of("error", ex.getMessage()));
+			.body(Map.of("error", ex.getMessage()));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -32,13 +32,13 @@ public class GlobalExceptionHandler {
 			errors.put(fieldName, errorMessage);
 		});
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body(errors);
+			.body(errors);
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<APIResponse> handleResourceNotFound(ResourceNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new APIResponse(ex.getMessage(), false));
+			.body(new APIResponse(ex.getMessage(), false));
 	}
 
 	@ExceptionHandler(APIException.class)
@@ -53,9 +53,9 @@ public class GlobalExceptionHandler {
 		errors.put("error", "Validation failed");
 
 		List<String> messages = ex.getConstraintViolations()
-				.stream()
-				.map(v -> v.getPropertyPath() + ": " + v.getMessage())
-				.toList();
+			.stream()
+			.map(v -> v.getPropertyPath() + ": " + v.getMessage())
+			.toList();
 
 		errors.put("details", messages);
 		return errors;

@@ -38,8 +38,8 @@ public interface CategoryService {
 	 * The method allows modifying the category's attributes such as its name.
 	 *
 	 * @param categoryId the unique identifier of the category to be updated
-	 * @param category the {@code CategoryDTO} object containing the new details for the category
-	 *                 to be updated
+	 * @param category   the {@code CategoryDTO} object containing the new details for the category
+	 *                   to be updated
 	 * @return the updated {@code CategoryDTO} object representing the modified category
 	 */
 	CategoryDTO updateCategory(Long categoryId, CategoryDTO category);

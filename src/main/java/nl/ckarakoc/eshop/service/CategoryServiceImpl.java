@@ -28,10 +28,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 		Pageable pageDetails = PageRequest.of(
-				pageNumber,
-				pageSize,
-				sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC,
-				sortBy
+			pageNumber,
+			pageSize,
+			sortOrder.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC,
+			sortBy
 		);
 		Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
 
@@ -39,8 +39,8 @@ public class CategoryServiceImpl implements CategoryService {
 		if (categories.isEmpty()) throw new APIException("No categories found");
 
 		List<CategoryDTO> categoryDTOs = categories.stream()
-				.map(category -> mapper.map(category, CategoryDTO.class))
-				.toList();
+			.map(category -> mapper.map(category, CategoryDTO.class))
+			.toList();
 		return new CategoryResponse(categoryDTOs, categoryPage.getNumber(), categoryPage.getSize(), categoryPage.getTotalElements(), categoryPage.getTotalPages(), categoryPage.isLast());
 	}
 
@@ -56,10 +56,10 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO getCategoryById(Long categoryId) {
 		return mapper
-				.map(categoryRepository
-								.findById(categoryId)
-								.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId)),
-						CategoryDTO.class);
+			.map(categoryRepository
+					.findById(categoryId)
+					.orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId)),
+				CategoryDTO.class);
 	}
 
 	@Override
@@ -67,9 +67,9 @@ public class CategoryServiceImpl implements CategoryService {
 		CategoryDTO cat = getCategoryById(categoryId);
 		cat.setCategoryName(categoryDto.getCategoryName());
 		return mapper
-				.map(categoryRepository
-								.save(mapper.map(cat, Category.class)),
-						CategoryDTO.class);
+			.map(categoryRepository
+					.save(mapper.map(cat, Category.class)),
+				CategoryDTO.class);
 	}
 
 	@Override
