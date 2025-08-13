@@ -31,6 +31,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
+
 		logger.debug("AuthTokenFilter called for URI: {}", request.getRequestURI());
 		try {
 			String jwt = parseJwt(request);
@@ -56,23 +57,23 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-//    private String parseJwt(HttpServletRequest request) {
-//        String jwt = jwtUtils.getJwtFromCookies(request);
-//        logger.debug("AuthTokenFilter.java: {}", jwt);
-//        return jwt;
-//    }
+    private String parseJwt(HttpServletRequest request) {
+        String jwt = jwtUtils.getJwtFromCookies(request);
+        logger.debug("AuthTokenFilter.java: {}", jwt);
+        return jwt;
+    }
 
-	private String parseJwt(HttpServletRequest request) {
-		String jwtFromCookie = jwtUtils.getJwtFromHeader(request);
-		if (jwtFromCookie != null) {
-			return jwtFromCookie;
-		}
-
-		String jwtFromHeader = jwtUtils.getJwtFromHeader(request);
-		if (jwtFromHeader != null) {
-			return jwtFromHeader;
-		}
-
-		return null;
-	}
+//	private String parseJwt(HttpServletRequest request) {
+//		String jwtFromCookie = jwtUtils.getJwtFromHeader(request);
+//		if (jwtFromCookie != null) {
+//			return jwtFromCookie;
+//		}
+//
+//		String jwtFromHeader = jwtUtils.getJwtFromHeader(request);
+//		if (jwtFromHeader != null) {
+//			return jwtFromHeader;
+//		}
+//
+//		return null;
+//	}
 }
