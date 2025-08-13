@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * Provides RESTful endpoints to handle the CRUD operations for {@code Category} entities.
  */
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class CategoryController {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class CategoryController {
 	 *
 	 * @return a list containing all {@code Category} objects.
 	 */
-	@GetMapping("public/categories")
+	@GetMapping("/public/categories")
 	public ResponseEntity<CategoryResponse> getAllCategories(
 		@RequestParam(name = "pageNumber", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 		@RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer pageSize,
@@ -46,7 +46,7 @@ public class CategoryController {
 	 * @return the {@code Category} object corresponding to the specified ID
 	 * or throws an exception if the category is not found
 	 */
-	@GetMapping("public/categories/{categoryId}")
+	@GetMapping("/public/categories/{categoryId}")
 	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long categoryId) {
 		return new ResponseEntity<>(categoryService.getCategoryById(categoryId), HttpStatus.OK);
 	}
@@ -58,7 +58,7 @@ public class CategoryController {
 	 * @return a {@code ResponseEntity} containing the newly created {@code CategoryDTO} object
 	 * and an HTTP status of {@code CREATED}
 	 */
-	@PostMapping("public/categories")
+	@PostMapping("/public/categories")
 	public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDto) {
 		return new ResponseEntity<>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
 	}
@@ -71,7 +71,7 @@ public class CategoryController {
 	 * @param category   the Category object containing the new details for the category
 	 * @return a ResponseEntity containing the updated Category object and an HTTP status of OK
 	 */
-	@PutMapping("public/categories/{categoryId}")
+	@PutMapping("/public/categories/{categoryId}")
 	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDTO category) {
 		return new ResponseEntity<>(categoryService.updateCategory(categoryId, category), HttpStatus.OK);
 	}
@@ -82,7 +82,7 @@ public class CategoryController {
 	 * @param categoryId the unique identifier of the category to be deleted
 	 * @return a {@code ResponseEntity<Void>} with HTTP status of {@code NO_CONTENT} upon successful deletion
 	 */
-	@DeleteMapping("admin/categories/{categoryId}")
+	@DeleteMapping("/admin/categories/{categoryId}")
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
 		categoryService.deleteCategory(categoryId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
