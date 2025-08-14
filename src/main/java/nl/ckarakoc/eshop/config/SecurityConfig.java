@@ -32,11 +32,13 @@ import java.util.Set;
 //@EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	final UserDetailsServiceImpl userDetailsService;
+	private final AuthEntryPointJwt unauthorizedHandler;
 
-	@Autowired
-	private AuthEntryPointJwt unauthorizedHandler;
+	public SecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+		this.userDetailsService = userDetailsService;
+		this.unauthorizedHandler = unauthorizedHandler;
+	}
 
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {

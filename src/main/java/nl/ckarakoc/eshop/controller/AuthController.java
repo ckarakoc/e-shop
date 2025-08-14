@@ -8,7 +8,6 @@ import nl.ckarakoc.eshop.repository.RoleRepository;
 import nl.ckarakoc.eshop.repository.UserRepository;
 import nl.ckarakoc.eshop.security.jwt.*;
 import nl.ckarakoc.eshop.security.services.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -29,20 +28,19 @@ import java.util.Set;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-	@Autowired
-	private JwtUtils jwtUtils;
+	private final JwtUtils jwtUtils;
+	private final AuthenticationManager authenticationManager;
+	final UserRepository userRepository;
+	final PasswordEncoder encoder;
+	final RoleRepository roleRepository;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	PasswordEncoder encoder;
-
-	@Autowired
-	RoleRepository roleRepository;
+	public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder encoder, RoleRepository roleRepository) {
+		this.jwtUtils = jwtUtils;
+		this.authenticationManager = authenticationManager;
+		this.userRepository = userRepository;
+		this.encoder = encoder;
+		this.roleRepository = roleRepository;
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -118,16 +116,15 @@ public class AuthController {
 	}
 
 	@PostMapping("/signout")
-	public ResponseEntity<?> signoutUser(){
+	public ResponseEntity<?> signoutUser() {
 		ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,
 				cookie.toString())
 			.body(new MessageResponse("You've been signed out!"));
 	}
 
-
 	@GetMapping("/username")
-	public String currentUserName(Authentication authentication){
+	public String currentUserName(Authentication authentication) {
 		if (authentication != null)
 			return authentication.getName();
 		else
@@ -136,7 +133,7 @@ public class AuthController {
 
 
 	@GetMapping("/user")
-	public ResponseEntity<?> getUserDetails(Authentication authentication){
+	public ResponseEntity<?> getUserDetails(Authentication authentication) {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
 			.map(item -> item.getAuthority())

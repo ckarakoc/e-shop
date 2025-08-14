@@ -24,13 +24,13 @@ import java.util.Date;
 public class JwtUtils {
 	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-	@Value("${spring.app.jwtSecret}")
+	@Value("${spring.app.jwt-secret}")
 	private String jwtSecret;
 
-	@Value("${spring.app.jwtExpirationMs}")
+	@Value("${spring.app.jwt-expiration-ms}")
 	private int jwtExpirationMs;
 
-	@Value("${spring.e-shop.app.jwtCookieName}")
+	@Value("${spring.e-shop.app.jwt-cookie-name}")
 	private String jwtCookie;
 
 	public String getJwtFromCookies(HttpServletRequest request) {
