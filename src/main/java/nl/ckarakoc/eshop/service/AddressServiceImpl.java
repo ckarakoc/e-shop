@@ -6,6 +6,8 @@ import nl.ckarakoc.eshop.model.User;
 import nl.ckarakoc.eshop.payload.AddressDTO;
 import nl.ckarakoc.eshop.repository.AddressRepository;
 import nl.ckarakoc.eshop.repository.UserRepository;
+import nl.ckarakoc.eshop.util.UpdateHelper;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +67,8 @@ public class AddressServiceImpl implements AddressService {
 		Address addressFromDb = addressRepository.findById(addressId)
 			.orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
 
-		addressFromDb.updateFrom(addressDTO);
+//		addressFromDb.updateFrom(addressDTO);
+		UpdateHelper.updateFromDto(addressFromDb, addressDTO);
 		Address saved = addressRepository.save(addressFromDb);
 
 		User user = addressFromDb.getUser();
