@@ -67,3 +67,8 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+### Environment Variables ###
+.env
+.env.local
+.env.*.local
+*.env
